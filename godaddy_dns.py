@@ -74,11 +74,14 @@ def get_domain_dns_records(domain):
     """
     url_suffix = "v1/domains/{}/records".format(domain)
     ret = _call_endpoint(url_suffix)
+    if isinstance(ret, dict) and ret.get('code', None) == "UNKNOWN_DOMAIN":
+        # e.g. {'code': 'UNKNOWN_DOMAIN', 'message': 'The given domain is not registered, or does not have a zone file'}
+        raise Exception(f"Can't find domain {domain}.  Are you sure your API key and secret are correct?: {ret}")
     return ret
 
 
 def print_all_dns_records():
-    # for each domain, print domain and its DNS records
+    """ Print each domain and its DNS records (for domains linked to this API key)."""
     for domain in sorted(get_domains()):
         dns_records = get_domain_dns_records(domain)
         print(domain)
