@@ -1,12 +1,11 @@
 """Simple interface for loading sensitive credentials.  Intended to easily shim in other key management systems."""
 import abc
-import json
 import os
 
 
 class CredentialLoader(abc.ABC):
     @abc.abstractmethod
-    def load_credentials(self):
+    def load_credentials(self) -> str:
         """Loads credentials per the child implementation (e.g. environment variable, local file, GCP-KMS...)"""
         pass
 
@@ -31,19 +30,23 @@ class EnvVarCredentialLoader(CredentialLoader):
 class PlaintextCredentialLoader(CredentialLoader):
     def __init__(self, fpath):
         """
-        CredentialLoader that saves credentials to disk in JSON-formatted plaintext.
-        This is the most straightforward (and least secure) CredentialLoader.
-        It's useful for prototyping quickly, but ill-advised for production.
+        CredentialLoader that reads credentials from disk in plaintext.
+        Not secure.  Designed for prototyping, not production.
 
         Args:
-            fpath: Name of credential (used for logging)
+            fpath: full path to credentials on disk
         """
         super().__init__()
         self.fpath = fpath
 
-    def load_credentials(self) -> dict:
+    def load_credentials(self) -> str:
         if not os.path.exists(self.fpath):
             raise FileNotFoundError(f"Cannot find credentials file {self.fpath}")
         with open(self.fpath, "r") as fh:
-            credential_dict = json.load(fh)
-        return credential_dict
+            lines = fh.readlines()
+            if len(lines) != 1:
+                raise NotImplementedError(
+                    f"Not sure how to interpret multiline credential file {self.fpath} " f"({len(lines)} lines)."
+                )
+            credentials = lines[0].rstrip("\n")
+        return credentials
