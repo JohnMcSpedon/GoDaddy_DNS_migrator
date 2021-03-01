@@ -16,9 +16,11 @@ import credential_loaders
 BASE_URL = "https://api.godaddy.com"
 
 # You can easily replace these with a different CredentialLoader to match your key management system
-API_KEY_CRED_LOADER = credential_loaders.PlaintextCredentialLoader("./api_key.txt")
-API_SECRET_CRED_LOADER = credential_loaders.PlaintextCredentialLoader("./api_secret.txt")
-# API_KEY_CRED_LOADER = credential_loaders.EnvVarCredentialLoader("GODADDY_API_KEY")
+API_KEY_CRED_LOADER = credential_loaders.EnvVarCredentialLoader("GODADDY_API_KEY")
+API_SECRET_CRED_LOADER = credential_loaders.EnvVarCredentialLoader("GODADDY_API_SECRET")
+# API_KEY_CRED_LOADER = credential_loaders.PlaintextCredentialLoader("./api_key.txt")
+# API_SECRET_CRED_LOADER = credential_loaders.PlaintextCredentialLoader("./api_secret.txt")
+
 
 
 def _get_headers() -> dict:
