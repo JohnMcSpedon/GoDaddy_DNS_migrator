@@ -1,0 +1,42 @@
+######## OSX ########
+*.DS_Store
+.AppleDouble
+.LSOverride
+.xprocess/
+.Trash-0/
+.pytest_cache/
+
+####### Misc #######
+# Vim
+*.swp
+*.swo
+
+######## Python ########
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+######## PYCHARM ########
+.idea
+
+# iPython
+.ipynb_checkpoints
